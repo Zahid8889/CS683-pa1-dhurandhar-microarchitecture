@@ -3,18 +3,17 @@
 
 #include "convolution.h"
 
+// void conv_reorder(const float *in, float *out, const float *ker,
+//                   int H, int W, int K)
+// {
+//     // TODO(student): replace this placeholder with your reordered implementation.
+//     //conv_reorder2(in, out, ker, H, W, K);
+// }
 void conv_reorder(const float *in, float *out, const float *ker,
-                  int H, int W, int K)
-{
-    // TODO(student): replace this placeholder with your reordered implementation.
-    conv_reorder2(in, out, ker, H, W, K);
-}
-void conv_reorder2(const float *in, float *out, const float *ker,
                  int H, int W, int K)
 {
     const int p = K / 2;
     const int in_stride = W + 2 * p; // padded row stride
-    int runs = H - K + 1;
 
     for (int  j = 0; j < H; j++)
     {
