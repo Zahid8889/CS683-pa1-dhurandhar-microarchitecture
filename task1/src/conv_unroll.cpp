@@ -9,7 +9,7 @@ void conv_unroll(const float* in, float* out, const float* ker,
     //Initialize - Ankit
     for(int i=0 ; i<H ; i++){
         for(int j=0 ; j<W ; j++){
-            out[i*K+j] = 0.0f;
+            out[i*W+j] = 0.0f;
         }
     }
 
