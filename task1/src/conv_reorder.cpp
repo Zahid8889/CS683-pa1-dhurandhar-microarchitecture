@@ -17,8 +17,8 @@ void conv_reorder(const float* in, float* out, const float* ker,
     }
 
     //reorder loop: ky->kx->oy->ox - Ankit
-    for(int ky=0 ; ky<H ; ky++){
-        for(int kx=0 ; kx<W ; kx++){
+    for(int ky=0 ; ky<K ; ky++){
+        for(int kx=0 ; kx<K ; kx++){
 
             float w = ker[ky*K + kx];
             for(int oy=0 ; oy<H ; oy++){
