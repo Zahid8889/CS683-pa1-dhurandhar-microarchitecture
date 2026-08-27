@@ -19,15 +19,15 @@ void conv_tile(const float* in, float* out, const float* ker,
 
     for(int tile_y = 0 ; tile_y<H ; tile_y+=TILE){
         for(int tile_x=0 ; tile_x<W ; tile_x+=TILE){
-            int x_end = (tile_x+TILE<W)?tile_x+TILE:W;
-            int y_end = (tile_y+TILE)?tile_y+TILE:H;
+            int x_end = ((tile_x+TILE) < W)?tile_x+TILE:W;
+            int y_end = ((tile_y+TILE) < H )?tile_y+TILE:H;
 
             for(int ky=0 ; ky<K ; ky++){
                 for(int kx=0 ; kx<K ; kx++){
                     const float w = ker[ky*K+kx];
 
-                    for(int oy=0 ; oy<y_end; oy++){
-                        for(int ox=0 ; ox<x_end ; ox++){
+                    for(int oy=tile_y ; oy<y_end; oy++){
+                        for(int ox=tile_x ; ox<x_end ; ox++){
                             out[oy * W + ox] += in[(oy + ky) * in_stride + (ox + kx)] * w;
                         }
                     }
@@ -37,6 +37,6 @@ void conv_tile(const float* in, float* out, const float* ker,
         }
     }
 
-    
+
 
 }
