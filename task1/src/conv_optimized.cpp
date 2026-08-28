@@ -23,7 +23,7 @@ void conv_optimized(const float* in, float* out, const float* ker,
 
     //tiling
     for(int tile_y=0 ; tile_y<H ; tile_y+=TILE){
-        for(int tile_x = 0 ;tile_x<K ; tile_x+=TILE){
+        for(int tile_x = 0 ;tile_x<W ; tile_x+=TILE){
 
             const int y_end = ((tile_y+TILE) < H)?tile_y+TILE:H;
             const int x_end = ((tile_x + TILE) < W)?tile_x+TILE:W;
