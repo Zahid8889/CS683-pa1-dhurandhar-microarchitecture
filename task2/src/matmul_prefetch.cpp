@@ -3,10 +3,37 @@
 #include <immintrin.h>
 
 #include "matmul.h"
-
+#define TILE 32
 void matmul_prefetch(const float* A, const float* B, float* C,
                      int M, int N, int K, int lda, int ldb, int ldc) {
     // TODO(student): replace this placeholder with your cache-blocked SIMD + prefetch
     // implementation.
-    matmul_naive(A, B, C, M, N, K, lda, ldb, ldc);
+    // matmul_naive(A, B, C, M, N, K, lda, ldb, ldc);
+    
+    for(int i1 = 0 ; i1<M; i1+=TILE){
+        for(int j1 = 0 ; j1<N; j1+=TILE){
+            int endi = (i1+TILE<M)? i1+TILE:M;
+            int endj = (j1+TILE<N)? j1+TILE:N;
+            for (int i = i1; i < endi; ++i) 
+                for (int j = j1; j < endj; ++j) 
+                    C[i*M +j] = 0.0f;
+
+            for(int k1 = 0 ; k1<K; k1+=TILE){
+                
+                int endk = (k1+TILE<K)? k1+TILE:K;
+                for (int i = i1; i < endi; ++i) {
+                    for (int j = j1; j < endj; ++j) {
+                        float acc = 0.0f;
+                        const float* a = A + static_cast<long>(i) * lda;
+                        const float* b = B + static_cast<long>(j) * ldb;
+                        for (int p = k1; p < endk; ++p) {
+                            acc += a[p] * b[p];
+                        }
+                        C[static_cast<long>(i) * ldc + j] += acc;
+                    }
+                }
+            }
+        }
+    }
+    
 }
