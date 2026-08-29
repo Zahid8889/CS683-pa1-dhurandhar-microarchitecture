@@ -14,6 +14,7 @@ void matmul_prefetch(const float* A, const float* B, float* C,
         for(int j1 = 0 ; j1<N; j1+=TILE){
             int endi = (i1+TILE<M)? i1+TILE:M;
             int endj = (j1+TILE<N)? j1+TILE:N;
+            
             for (int i = i1; i < endi; ++i) 
                 for (int j = j1; j < endj; ++j) 
                     C[i*M +j] = 0.0f;
