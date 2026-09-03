@@ -17,18 +17,19 @@ void matmul_prefetch(const float* A, const float* B, float* C,
             
             for (int i = i1; i < endi; ++i) 
                 for (int j = j1; j < endj; ++j) 
-                    C[i*M +j] = 0.0f;
+                    C[i*ldc +j] = 0.0f;
 
             for(int k1 = 0 ; k1<K; k1+=TILE){
                 
                 int endk = (k1+TILE<K)? k1+TILE:K;
+
                 for (int i = i1; i < endi; ++i) {
                     for (int j = j1; j < endj; ++j) {
                         float acc = 0.0f;
                         const float* a = A + static_cast<long>(i) * lda;
                         const float* b = B + static_cast<long>(j) * ldb;
                         for (int p = k1; p < endk; ++p) {
-                            if(p+32<endk){
+                            if(p+16<endk){
                                 _mm_prefetch((const char*)&A[i*lda+p+32],_MM_HINT_T0);
                                 _mm_prefetch((const char*)&B[j*ldb+p+32],_MM_HINT_T0);
 
