@@ -38,10 +38,10 @@ void matmul_optimized(const float* A, const float* B, float* C,
                             if(p+16<K){
                                 // _mm_prefetch((const char*)&A[i*lda+p+32],_MM_HINT_T0);
                                 // _mm_prefetch((const char*)&B[j*ldb+p+32],_MM_HINT_T0);
-                                _mm_prefetch((const char*)&b0[p+32],_MM_HINT_T0);
-                                _mm_prefetch((const char*)&b1[p+32],_MM_HINT_T0);
-                                _mm_prefetch((const char*)&b2[p+32],_MM_HINT_T0);
-                                _mm_prefetch((const char*)&b3[p+32],_MM_HINT_T0);
+                                // _mm_prefetch((const char*)&b0[p+16],_MM_HINT_T0);
+                                // _mm_prefetch((const char*)&b1[p+16],_MM_HINT_T0);
+                                // _mm_prefetch((const char*)&b2[p+16],_MM_HINT_T0);
+                                // _mm_prefetch((const char*)&b3[p+16],_MM_HINT_T0);
 
                             }
                             __m512 av = _mm512_loadu_ps(a + p);
