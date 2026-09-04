@@ -12,7 +12,7 @@ void conv_optimized(const float* in, float* out, const float* ker,
     const int p = K/2;
     const int in_stride = W+2*p;
     
-    const int TILE = 32;
+    const int TILE = 64;
 
 
     //tiling
