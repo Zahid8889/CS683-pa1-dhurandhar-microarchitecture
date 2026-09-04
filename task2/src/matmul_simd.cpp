@@ -9,12 +9,12 @@ void matmul_simd(const float* A, const float* B, float* C,
     for(int i=0 ; i<M ; i++){
         const float *a = A + static_cast<long>(i)* lda;
         for(int j=0 ; j<N ; j++){
-            const float *b = B + static_cast<long>(i) * ldb;
+            const float *b = B + static_cast<long>(j) * ldb;
 
             __m256 sum = _mm256_setzero_ps();
             int p=0;
             // Process 8 elements
-            for( ; p+7 < K ; p++){
+            for( ; p+7 < K ; p+=8){
                 __m256 va = _mm256_loadu_ps(a + p);
 
                 __m256 vb = _mm256_loadu_ps(b + p);
