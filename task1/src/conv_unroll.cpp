@@ -12,35 +12,31 @@ void conv_unroll(const float *in, float *out, const float *ker,
     const int p = K / 2;
     const int in_stride = W + 2 * p; // padded row stride
 
-    for (int j = 0; j < H; j++)
+    for (int oy = 0; oy < H; ++oy)
     {
-        for (int i = 0; i < W; i++)
+        for (int ox = 0; ox < W; ++ox)
         {
-            out[j * W + i] = 0.0f;
-        }
-    }
-
-    for (int ky = 0; ky < K; ky++)
-    {
-        for (int kx = 0; kx < K; kx++)
-        {
-            float kerv = ker[ky * K + kx];
-            for (int oy = 0; oy < H; oy++)
+            float acc = 0.0f;
+            for (int ky = 0; ky < K; ++ky)
             {
-                int ox;
-                for (ox = 0; ox + 4 < W; ox += 5)
+                int kx = 0;
+                while (kx + 6 <= K)
                 {
-                    out[oy * W + ox] += in[(oy + ky) * in_stride + (ox + kx)] * kerv;
-                    out[oy * W + ox + 1] += in[(oy + ky) * in_stride + (ox + kx + 1)] * kerv;
-                    out[oy * W + ox + 2] += in[(oy + ky) * in_stride + (ox + kx + 2)] * kerv;
-                    out[oy * W + ox + 3] += in[(oy + ky) * in_stride + (ox + kx + 3)] * kerv;
-                    out[oy * W + ox + 4] += in[(oy + ky) * in_stride + (ox + kx + 4)] * kerv;
+                    acc += in[(oy + ky) * in_stride + (ox + kx)] * ker[ky * K + kx];
+                    acc += in[(oy + ky) * in_stride + (ox + kx) + 1] * ker[ky * K + kx + 1];
+                    acc += in[(oy + ky) * in_stride + (ox + kx) + 2] * ker[ky * K + kx + 2];
+                    acc += in[(oy + ky) * in_stride + (ox + kx) + 3] * ker[ky * K + kx + 3];
+                    acc += in[(oy + ky) * in_stride + (ox + kx) + 4] * ker[ky * K + kx + 4];
+                    acc += in[(oy + ky) * in_stride + (ox + kx) + 5] * ker[ky * K + kx + 5];
+                    kx += 6;
                 }
-                for (; ox < W; ox++)
+                while (kx < K)
                 {
-                    out[oy * W + ox] += in[(oy + ky) * in_stride + (ox + kx)] * kerv;
+                    acc += in[(oy + ky) * in_stride + (ox + kx)] * ker[ky * K + kx];
+                    kx++;
                 }
             }
+            out[oy * W + ox] = acc;
         }
     }
 }
