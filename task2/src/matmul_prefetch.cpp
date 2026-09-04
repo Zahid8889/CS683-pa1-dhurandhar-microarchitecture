@@ -36,8 +36,7 @@ void matmul_prefetch(const float* A, const float* B, float* C,
 
                         for(int p=pp ; p<p_end ; p++){
                             // Prefetch future data
-                            if ((p & 15) == 0 &&
-                                p + PREFETCH_DIS < K) {
+                            if (p + PREFETCH_DIS < p_end) {
 
                                 _mm_prefetch(
                                     reinterpret_cast<const char*>(
