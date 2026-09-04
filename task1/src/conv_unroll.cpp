@@ -20,15 +20,15 @@ void conv_unroll(const float *in, float *out, const float *ker,
             for (int ky = 0; ky < K; ++ky)
             {
                 int kx = 0;
-                while (kx + 6 <= K)
+                while (kx + 4 <= K)
                 {
-                    acc += in[(oy + ky) * in_stride + (ox + kx)] * ker[ky * K + kx];
-                    acc += in[(oy + ky) * in_stride + (ox + kx) + 1] * ker[ky * K + kx + 1];
-                    acc += in[(oy + ky) * in_stride + (ox + kx) + 2] * ker[ky * K + kx + 2];
-                    acc += in[(oy + ky) * in_stride + (ox + kx) + 3] * ker[ky * K + kx + 3];
-                    acc += in[(oy + ky) * in_stride + (ox + kx) + 4] * ker[ky * K + kx + 4];
-                    acc += in[(oy + ky) * in_stride + (ox + kx) + 5] * ker[ky * K + kx + 5];
-                    kx += 6;
+                    int out_loc=(oy + ky) * in_stride + (ox + kx);
+                    int kernel_loc= ky * K + kx;
+                    acc += in[out_loc] * ker[kernel_loc];
+                    acc += in[out_loc+ 1] * ker[kernel_loc+ 1];
+                    acc += in[out_loc + 2] * ker[kernel_loc + 2];
+                    acc += in[out_loc+ 3] * ker[kernel_loc + 3];
+                    kx += 4;
                 }
                 while (kx < K)
                 {
