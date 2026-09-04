@@ -21,7 +21,7 @@ void conv_optimized(const float* in, float* out, const float* ker,
 
             const int y_end = ((tile_y+TILE) < H)?tile_y+TILE:H;
             const int x_end = ((tile_x + TILE) < W)?tile_x+TILE:W;
-            
+
             //correct order starts here
             for(int ky=0 ; ky<K ; ky++){
                 for(int kx=0 ; kx<K ; kx++){
@@ -74,11 +74,16 @@ void conv_optimized(const float* in, float* out, const float* ker,
                         for(; ox<x_end ; ox+=8){
                             __m256 input = _mm256_loadu_ps(&in[(oy + ky) * in_stride + ox + kx]);
 
-                            __m256 output = _mm256_loadu_ps(&out[oy*W+ox]);
+                            __m256 output;
 
-                            output = _mm256_fmadd_ps(input, weight, output);
+                            if (ky == 0 && kx == 0) {
+                                output = _mm256_mul_ps(input, weight);
+                            } else {
+                                output = _mm256_loadu_ps(&out[oy * W + ox]);
+                                output = _mm256_fmadd_ps(input, weight, output);
+                            }
 
-                            _mm256_storeu_ps(&out[oy*W+ox], output);
+                            _mm256_storeu_ps(&out[oy * W + ox], output);
                         }
 
                     }
