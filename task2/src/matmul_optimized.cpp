@@ -10,7 +10,7 @@
 #include <immintrin.h>
 
 #include "matmul.h"
-#define TILE 64
+#define TILE 128
 void matmul_optimized(const float* A, const float* B, float* C,
                       int M, int N, int K, int lda, int ldb, int ldc) {
     // TODO(student): replace this placeholder with your best combined implementation.
@@ -35,15 +35,13 @@ void matmul_optimized(const float* A, const float* B, float* C,
                         const float* b0 = B + j * ldb, *b1= b0+ldb, *b2 = b1+ldb, *b3 = b2+ldb;
                         int p;
                         for ( p = p_start; p+15 < p_end; p+=16) {
-                            if(p+16<K){
-                                // _mm_prefetch((const char*)&A[i*lda+p+32],_MM_HINT_T0);
-                                // _mm_prefetch((const char*)&B[j*ldb+p+32],_MM_HINT_T0);
-                                // _mm_prefetch((const char*)&b0[p+16],_MM_HINT_T0);
-                                // _mm_prefetch((const char*)&b1[p+16],_MM_HINT_T0);
-                                // _mm_prefetch((const char*)&b2[p+16],_MM_HINT_T0);
-                                // _mm_prefetch((const char*)&b3[p+16],_MM_HINT_T0);
+                            // if(p+8<K){
+                            //     _mm_prefetch((const char*)&b0[p+8],_MM_HINT_T0);
+                            //     _mm_prefetch((const char*)&b1[p+8],_MM_HINT_T0);
+                            //     _mm_prefetch((const char*)&b2[p+8],_MM_HINT_T0);
+                            //     _mm_prefetch((const char*)&b3[p+8],_MM_HINT_T0);
 
-                            }
+                            // }
                             __m512 av = _mm512_loadu_ps(a + p);
                             s0 = _mm512_fmadd_ps(av,_mm512_loadu_ps(b0 +p),s0);
                             s1 = _mm512_fmadd_ps(av,_mm512_loadu_ps(b1 +p),s1);

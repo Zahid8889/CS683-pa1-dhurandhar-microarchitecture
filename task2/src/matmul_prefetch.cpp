@@ -30,8 +30,8 @@ void matmul_prefetch(const float* A, const float* B, float* C,
                         const float* b = B + static_cast<long>(j) * ldb;
                         for (int p = k1; p < endk; ++p) {
                             if(p+16<endk){
-                                _mm_prefetch((const char*)&A[i*lda+p+32],_MM_HINT_T0);
-                                _mm_prefetch((const char*)&B[j*ldb+p+32],_MM_HINT_T0);
+                                _mm_prefetch((const char*)&a[p+16],_MM_HINT_T0);
+                                _mm_prefetch((const char*)&b[p+16],_MM_HINT_T0);
 
                             }
                             acc += a[p] * b[p];
