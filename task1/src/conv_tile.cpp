@@ -8,7 +8,7 @@ void conv_tile(const float* in, float* out, const float* ker,
     // conv_naive(in, out, ker, H, W, K);
     const int p = K / 2;
     const int in_stride = W + 2 * p;  // padded row stride
-    const int T = 64;
+    const int T = 48;
 
     for(int ty = 0; ty < H; ty+=T){
         for(int tx = 0; tx < W; tx+=T){
