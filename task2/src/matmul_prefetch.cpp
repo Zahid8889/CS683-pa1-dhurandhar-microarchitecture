@@ -12,7 +12,6 @@ void matmul_prefetch(const float* A, const float* B, float* C,
     const int BLOCK = 64;
     const int PREFETCH_DIS = 64;
 
-    //Blocked matrix multiplication
     for(int ii=0; ii<M ; ii+=BLOCK){
         int i_end = ii+BLOCK<M?ii+BLOCK:M;
 
@@ -23,7 +22,6 @@ void matmul_prefetch(const float* A, const float* B, float* C,
 
                 int p_end = pp+BLOCK<K?pp+BLOCK:K;
 
-                //compute one block first
                 for(int i=ii; i<i_end; i++){
                     const float* a = A+static_cast<long>(i)*lda;
 
@@ -32,7 +30,6 @@ void matmul_prefetch(const float* A, const float* B, float* C,
 
                         float acc;
 
-                        //Initialize only during first K block
                         if(pp==0){
                             acc = 0.0f;
                         }else{
@@ -41,7 +38,6 @@ void matmul_prefetch(const float* A, const float* B, float* C,
 
                         for(int p=pp ; p<p_end ; p++){
 
-                            //Prefetch future data
                             if(p+PREFETCH_DIS<p_end){
 
                                 _mm_prefetch(
