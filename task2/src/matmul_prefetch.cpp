@@ -3,7 +3,7 @@
 #include <immintrin.h>
 
 #include "matmul.h"
-
+#define TILE 64
 void matmul_prefetch(const float* A, const float* B, float* C,
                      int M, int N, int K, int lda, int ldb, int ldc) {
     
@@ -64,5 +64,4 @@ void matmul_prefetch(const float* A, const float* B, float* C,
         }
     }
     
-
 }
