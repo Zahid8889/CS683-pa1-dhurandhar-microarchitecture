@@ -21,8 +21,8 @@ void matmul_optimized(const float* A, const float* B, float* C,
                       int M, int N, int K,
                       int lda, int ldb, int ldc) {
 
-    const int BLOCK = 32;
-    const int PREFETCH_DISTANCE = 16;
+    const int BLOCK = 8;
+    const int PREFETCH_DISTANCE = 8;
 
     // Cache blocking 
     for (int ii = 0; ii < M; ii += BLOCK) {
