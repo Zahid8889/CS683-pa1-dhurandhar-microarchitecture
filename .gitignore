@@ -1,2 +1,5 @@
 bin/
 solution/
+.DS_STORE
+task2/src/matmul_optimized2.cpp
+*.csv

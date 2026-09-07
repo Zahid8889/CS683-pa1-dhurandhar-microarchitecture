@@ -115,6 +115,7 @@ static double run_config(int H, int W, int K, unsigned seed, const char* only,
         const bool is_naive = (kStages[s].fn == conv_naive);
         // In single-stage mode, always run naive (baseline/reference) + the chosen stage.
         if (!all && !is_naive && std::strcmp(kStages[s].key, only) != 0) continue;
+        // if (!all && (is_naive || std::strcmp(kStages[s].key, only) != 0)) continue;
 
         auto run = [&]() { kStages[s].fn(in, out, ker, H, W, K); };
         run();  // one untimed run to produce the result we check

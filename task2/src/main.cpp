@@ -116,7 +116,8 @@ static double run_config(int M, int N, int K, unsigned seed, const char* only,
 
     for (int s = 0; s < kNumStages; ++s) {
         const bool is_naive = (kStages[s].fn == matmul_naive);
-        if (!all && !is_naive && std::strcmp(kStages[s].key, only) != 0) continue;
+        // if (!all && !is_naive && std::strcmp(kStages[s].key, only) != 0) continue;
+        if (!all && (is_naive || std::strcmp(kStages[s].key, only) != 0)) continue;
 
         auto run = [&]() { kStages[s].fn(A, B, C, M, N, K, lda, ldb, ldc); };
         run();  // one untimed run to produce the result we check

@@ -13,6 +13,7 @@ CXX      := g++
 CXXFLAGS := -std=c++17 -O2 -fno-tree-vectorize -mavx2 -mfma -Iinclude -Wall
 LDFLAGS  :=
 
+
 BIN          := bin
 MAIN         := src/main.cpp
 STUDENT_SRC  := src/matmul_naive.cpp src/matmul_simd.cpp src/matmul_prefetch.cpp \
